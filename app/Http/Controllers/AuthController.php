@@ -9,8 +9,12 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function index() {
-        return view('auth.index'); 
+    public function showRegister() {
+        return view('auth.register');
+    }
+
+    public function showLogin() {
+        return view('auth.login');
     }
     public function register(Request $request) {
         $request->validate([
