@@ -13,7 +13,13 @@ return new class extends Migration
     {
         Schema::create('meal_plans', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+        $table->foreignId('user_id')->constrained()->onDelete('cascade');
+        $table->foreignId('recipe_id')->constrained()->onDelete('cascade');
+        $table->integer('serving');
+        $table->enum('meal_type', ['breakfast', 'lunch', 'dinner', 'snack']);
+        $table->date('planned_date');
+        $table->boolean('isDone')->default(false);
+        $table->timestamps();
         });
     }
 
