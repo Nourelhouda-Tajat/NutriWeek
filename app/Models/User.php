@@ -19,8 +19,10 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'username',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -44,5 +46,13 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function recipes() {
+        return $this->hasMany(Recipe::class);
+    }
+
+    public function mealPlans() {
+        return $this->hasMany(MealPlan::class);
     }
 }
