@@ -9,14 +9,13 @@ export default {
         extend: {
             colors: {
                 garden: {
-                    olive: "#7A8C54",
+                    olive: "#7A8C54", // Le vert de ton bouton "Get Started"
                     olive_dark: "#5D6B40",
-                    olive_light: "#EDF1E5",
+                    olive_light: "#EDF1E5", // Le fond des petites cartes
                     text_dark: "#1A1A1A",
                     text_light: "#707070",
-                    bg_page: "#F9FAF6",
-                    beige_bg: "#FBF9F1",
-                    orange_accent: "#E69E57",
+                    bg_page: "#F9FAF6", // Le fond très légèrement grisé/vert de la maquette
+                    green_subtle: "#3C645B", // Le vert du logo NutriWeek
                 },
             },
         },
