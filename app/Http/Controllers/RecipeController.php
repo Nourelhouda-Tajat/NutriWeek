@@ -3,10 +3,28 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Recipe;
+use App\Models\Category;
+use App\Models\Ingredient;
+use Illuminate\Support\Facades\DB;
 
 class RecipeController extends Controller
 {
-    // Dans RecipeController.php
+    public function index()
+    {
+        $recipes = Auth::user()->recipes()->with('category')->latest()->get();
+        return view('recipes.index', compact('recipes'));
+    }
+
+    public function create(Category $category,Ingredient $ingredient)
+    {
+        return view('recipes.create', [
+            'categories' => $category->all(),
+            'ingredients' => $ingredient->all()
+        ]);
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
