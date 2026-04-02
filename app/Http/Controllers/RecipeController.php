@@ -17,6 +17,12 @@ class RecipeController extends Controller
         return view('recipes.index', compact('recipes'));
     }
 
+    public function show(Recipe $recipe)
+    {
+        $recipe->load(['ingredients', 'category']);
+        return view('recipes.show', compact('recipe'));
+    }
+
     public function create(Category $category,Ingredient $ingredient)
     {
         return view('recipes.create', [
