@@ -14,10 +14,27 @@
         @else
             <div class="grid gap-4">
                 @foreach($recipes as $recipe)
-                    <div class="p-4 border rounded hover:bg-gray-50">
-                        <h2 class="font-bold text-lg">{{ $recipe->title }}</h2>
-                        <p class="text-sm text-gray-600 italic">Catégorie : {{ $recipe->category->name }}</p>
-                        <p class="mt-2">{{ Str::limit($recipe->description, 100) }}</p>
+                    <div class="p-4 border rounded hover:bg-gray-50 flex justify-between items-center mb-4">
+                        <div>
+                            <h2 class="font-bold text-lg text-blue-700">
+                                <a href="{{ route('recipes.show', $recipe) }}">{{ $recipe->title }}</a>
+                            </h2>
+                            <p class="text-sm text-gray-600 italic">Catégorie : {{ $recipe->category->name }}</p>
+                        </div>
+                        
+                        <div class="flex gap-2">
+                            <a href="{{ route('recipes.edit', $recipe) }}" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600">
+                                Modifier
+                            </a>
+
+                            <form action="{{ route('recipes.destroy', $recipe) }}" method="POST" onsubmit="return confirm('Es-tu sûr de vouloir supprimer cette recette ?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700">
+                                    Supprimer
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 @endforeach
             </div>
