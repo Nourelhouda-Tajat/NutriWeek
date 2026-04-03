@@ -47,5 +47,14 @@ class IngredientController extends Controller
         return redirect()->route('ingredients.index')->with('success', 'Ingrédient mis à jour.');
     }
 
-    
+    public function destroy(Ingredient $ingredient)
+    {
+        // Règle de gestion : Ne pas supprimer si utilisé dans une recette
+        if ($ingredient->recipes()->exists()) {
+            return back()->with('error', 'Impossible de supprimer : cet ingrédient est utilisé dans des recettes.');
+        }
+
+        $ingredient->delete();
+        return redirect()->route('ingredients.index')->with('success', 'Ingrédient supprimé.');
+    }
 }
