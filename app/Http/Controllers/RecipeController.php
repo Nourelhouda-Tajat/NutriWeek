@@ -65,6 +65,24 @@ class RecipeController extends Controller
             return redirect()->route('recipes.index')->with('success', 'Recette ajoutée !');
         });
     }
+    public function edit(Recipe $recipe)
+    {
+        if ($recipe->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $categories = Category::all();
+        $ingredients = Ingredient::all();
+        
+        return view('recipes.edit', compact('recipe', 'categories', 'ingredients'));
+    }
+    public function destroy(Recipe $recipe)
+    {
+        if ($recipe->user_id !== auth()->id()) abort(403);
+
+        $recipe->delete(); 
+        return redirect()->route('recipes.index')->with('success', 'Recette supprimée.');
+    }
 }
 
 
