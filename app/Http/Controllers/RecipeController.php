@@ -13,7 +13,12 @@ class RecipeController extends Controller
 {
     public function index()
     {
-        $recipes = Auth::user()->recipes()->with('category')->latest()->get();
+        $recipes = Recipe::with('category', 'user')
+            ->where('is_public', true)
+            ->orWhere('user_id', auth()->id())
+            ->latest()
+            ->get();
+
         return view('recipes.index', compact('recipes'));
     }
 
@@ -77,7 +82,7 @@ class RecipeController extends Controller
         return view('recipes.edit', compact('recipe', 'categories', 'ingredients'));
     }
 
-        public function update(Request $request, Recipe $recipe)
+    public function update(Request $request, Recipe $recipe)
     {
         if ($recipe->user_id !== auth()->id()) abort(403);
 
