@@ -12,6 +12,13 @@
         @if($recipes->isEmpty())
             <p>Aucune recette trouvée. <a href="{{ route('recipes.create') }}" class="underline">Ajouter une recette</a></p>
         @else
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold text-green-700">Mes Recettes NutriWeek</h1>
+            
+            <a href="{{ route('recipes.create') }}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded shadow">
+                + Créer une recette
+            </a>
+        </div>
             <div class="grid gap-4">
                 @foreach($recipes as $recipe)
                     <div class="p-4 border rounded hover:bg-gray-50 flex justify-between items-center mb-4">
