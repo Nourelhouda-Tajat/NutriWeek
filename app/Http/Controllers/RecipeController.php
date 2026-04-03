@@ -76,6 +76,31 @@ class RecipeController extends Controller
         
         return view('recipes.edit', compact('recipe', 'categories', 'ingredients'));
     }
+
+        public function update(Request $request, Recipe $recipe)
+    {
+        if ($recipe->user_id !== auth()->id()) abort(403);
+
+        $validated = $request->validate([
+            'title' => 'required',
+            'category_id' => 'required|exists:categories,id',
+            'instructions' => 'required',
+            'prep_time' => 'required|integer',
+            'servings' => 'required|integer',
+            'ingredients' => 'required|array',
+        ]);
+
+        $recipe->update($request->all());
+
+        $ingredients = collect($request->ingredients)->mapWithKeys(function ($item) {
+            return [$item['id'] => ['quantity' => $item['quantity'], 'unit' => $item['unit']]];
+        });
+
+        $recipe->ingredients()->sync($ingredients);
+
+        return redirect()->route('recipes.index')->with('success', 'Recette modifiée !');
+    }
+    
     public function destroy(Recipe $recipe)
     {
         if ($recipe->user_id !== auth()->id()) abort(403);
