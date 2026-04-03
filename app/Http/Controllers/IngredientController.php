@@ -13,5 +13,22 @@ class IngredientController extends Controller
         return view('ingredients.index', compact('ingredients'));
     }
 
+    public function create()
+    {
+        return view('ingredients.create');
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|unique:ingredients,name|max:255',
+            'default_unit' => 'nullable|string|max:20',
+        ]);
+
+        Ingredient::create($validated);
+
+        return redirect()->route('ingredients.index')->with('success', 'Ingrédient ajouté au référentiel.');
+    }
+
     
 }
