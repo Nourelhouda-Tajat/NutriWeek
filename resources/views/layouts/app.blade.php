@@ -14,7 +14,7 @@
     @include('layouts.nav')
 
     <main>
-        {{ $slot }}
+        @yield('content')
     </main>
 
     <footer class="py-12 text-center text-[#5C634D] text-sm">
