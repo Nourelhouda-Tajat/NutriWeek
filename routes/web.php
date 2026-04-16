@@ -23,5 +23,9 @@ Route::middleware(['auth'])->group(function () {
         return view('dashboard');
     })->name('dashboard');
     Route::resource('recipes', RecipeController::class);
+    Route::get('/my-week', [MealPlanController::class, 'index'])->name('meal_plans.index');
+    Route::post('/meal-plans', [MealPlanController::class, 'store'])->name('meal_plans.store');
+    Route::patch('/meal-plans/{mealPlan}/toggle', [MealPlanController::class, 'toggleDone']);
+    Route::delete('/meal-plans/{mealPlan}', [MealPlanController::class, 'destroy'])->name('meal_plans.destroy');
     
 });
