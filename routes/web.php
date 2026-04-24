@@ -27,5 +27,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/meal-plans', [MealPlanController::class, 'store'])->name('meal_plans.store');
     Route::patch('/meal-plans/{mealPlan}/toggle', [MealPlanController::class, 'toggleDone']);
     Route::delete('/meal-plans/{mealPlan}', [MealPlanController::class, 'destroy'])->name('meal_plans.destroy');
-    
+
+    // Shopping List (Nouvelle Route)
+    Route::get('/shopping-list', [ShoppingListController::class, 'index'])->name('shopping_list.index');
+});
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+    Route::delete('/admin/users/{user}', [AdminController::class, 'destroyUser'])->name('admin.users.destroy');
 });
