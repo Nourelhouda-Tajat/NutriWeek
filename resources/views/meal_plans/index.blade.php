@@ -4,74 +4,98 @@
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>NutriWeek - Weekly Planner</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     <script id="tailwind-config">
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: {
-                        "primary": "#56642b",
-                        "secondary": "#9b4500",
-                        "surface": "#fbfaee",
-                        "on-surface": "#1b1c15",
-                        "on-surface-variant": "#46483c",
-                        "primary-fixed": "#d9eaa3",
-                        "secondary-fixed": "#ffdbc9",
-                        "tertiary-fixed": "#ffdcbd",
-                        "surface-container-low": "#f5f4e8",
-                        "surface-container-highest": "#e4e3d7",
-                        "surface-container-lowest": "#ffffff",
-                    },
-                    fontFamily: {
-                        "headline": ["Plus Jakarta Sans"],
-                        "body": ["Be Vietnam Pro"],
-                    },
-                    borderRadius: { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" },
+                    colors: { "primary": "#56642b", "secondary": "#9b4500", "surface": "#fbfaee", "on-surface": "#1b1c15", "primary-fixed": "#d9eaa3" },
+                    fontFamily: { "headline": ["Plus Jakarta Sans"], "body": ["Be Vietnam Pro"] },
                 },
             },
         }
     </script>
     <style>
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-        body { background-color: #fbfaee; font-family: 'Be Vietnam Pro', sans-serif; color: #1b1c15; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #d9eaa3; border-radius: 10px; }
     </style>
 </head>
 <body class="bg-surface text-on-surface">
 
-<header class="fixed top-0 w-full z-50 bg-white h-[64px] border-b border-zinc-100 shadow-sm">
-    <div class="flex justify-between items-center px-6 h-full max-w-7xl mx-auto">
-        <div class="flex items-center gap-2">
-            <a href="{{ url('/') }}" class="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary/80 text-white">
-                <span class="material-symbols-outlined text-xl">potted_plant</span>
-            </a>
-            <span class="text-xl font-bold font-headline tracking-tight">NutriWeek</span>
+<nav class="fixed top-0 w-full z-50 bg-white/60 backdrop-blur-md shadow-sm border-b border-zinc-100">
+    <div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto font-headline tracking-tight">
+        
+        <a href="{{ url('/') }}" class="text-2xl font-bold text-lime-900 flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">potted_plant</span>
+            NutriWeek
+        </a>
+        
+        <div class="hidden md:flex items-center gap-2">
+            <a class="px-4 py-2 rounded-full text-sm font-bold transition-all {{ request()->routeIs('dashboard') ? 'text-primary bg-primary/5' : 'text-stone-500 hover:text-lime-700 hover:bg-stone-50' }}" 
+               href="{{ route('dashboard') }}">Home</a>
+            
+            <a class="px-4 py-2 rounded-full text-sm font-bold transition-all {{ request()->routeIs('recipes.*') ? 'text-primary bg-primary/5' : 'text-stone-500 hover:text-lime-700 hover:bg-stone-50' }}" 
+               href="{{ route('recipes.index') }}">Recipes</a>
+            
+            <a class="px-4 py-2 rounded-full text-sm font-bold transition-all {{ request()->routeIs('meal_plans.*') ? 'text-primary bg-primary/5' : 'text-stone-500 hover:text-lime-700 hover:bg-stone-50' }}" 
+               href="{{ route('meal_plans.index') }}">Meal Plans</a>
+            
+            <a class="px-4 py-2 rounded-full text-sm font-bold transition-all {{ request()->routeIs('shopping_list.*') ? 'text-primary bg-primary/5' : 'text-stone-500 hover:text-lime-700 hover:bg-stone-50' }}" 
+               href="{{ route('shopping_list.index') }}">Shopping</a>
         </div>
-        <nav class="hidden md:flex items-center gap-1">
-            <a class="text-zinc-500 font-headline font-semibold px-4 py-2 rounded-lg text-sm" href="{{ route('dashboard') }}">Home</a>
-            <a class="text-zinc-500 font-headline font-semibold px-4 py-2 rounded-lg text-sm" href="{{ route('recipes.index') }}">Recipes</a>
-            <a class="text-primary font-bold font-headline bg-primary/5 px-4 py-2 rounded-lg text-sm" href="#">My Week</a>
-        </nav>
-        <div class="flex items-center gap-3">
-            <span class="text-sm font-bold text-primary">{{ auth()->user()->username }}</span>
-            <img class="w-8 h-8 rounded-full border" src="https://ui-avatars.com/api/?name={{ auth()->user()->username }}&background=56642b&color=fff"/>
+
+        <div class="flex items-center gap-4">
+            <div class="hidden md:flex flex-col items-end">
+                <span class="font-headline font-bold text-xs leading-none">{{ auth()->user()->username }}</span>
+                <span class="text-[10px] text-zinc-500 font-medium uppercase tracking-tighter">{{ auth()->user()->role }} Member</span>
+            </div>
+            
+            <div class="relative group">
+                <img class="w-9 h-9 rounded-full border border-zinc-200 cursor-pointer object-cover" 
+                     src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->username) }}&background=56642b&color=fff"/>
+                
+                <div class="absolute top-full right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-zinc-100 hidden group-hover:block overflow-hidden py-1 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                    <div class="px-4 py-2 border-b border-zinc-50 md:hidden">
+                        <p class="text-xs font-bold">{{ auth()->user()->username }}</p>
+                    </div>
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="w-full text-left block px-4 py-2 text-sm text-red-600 hover:bg-red-50 font-semibold transition-colors">
+                            <span class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-sm">logout</span>
+                                Sign Out
+                            </span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-stone-600 hover:bg-stone-100 rounded-full transition-colors">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
         </div>
     </div>
-</header>
 
-<main class="pt-24 pb-32 px-4 md:px-8 max-w-[1600px] mx-auto min-h-screen">
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-zinc-100 p-6 space-y-4 animate-in slide-in-from-top duration-300">
+        <a class="block font-bold {{ request()->routeIs('dashboard') ? 'text-primary' : 'text-stone-600' }}" href="{{ route('dashboard') }}">Home</a>
+        <a class="block font-bold {{ request()->routeIs('recipes.index') ? 'text-primary' : 'text-stone-600' }}" href="{{ route('recipes.index') }}">Recipes</a>
+        <a class="block font-bold {{ request()->routeIs('meal_plans.index') ? 'text-primary' : 'text-stone-600' }}" href="{{ route('meal_plans.index') }}">Meal Plans</a>
+        <a class="block font-bold {{ request()->routeIs('shopping_list.index') ? 'text-primary' : 'text-stone-600' }}" href="{{ route('shopping_list.index') }}">Shopping List</a>
+    </div>
+</nav>
+
+<main class="pt-24 pb-32 px-4 md:px-8 max-w-[1600px] mx-auto">
     <section class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
             <h1 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tight mb-2">Weekly Plan</h1>
-            <p class="text-on-surface-variant">Cultivate your habits, one meal at a time.</p>
+            <p class="text-zinc-500">Plan your meals, harvest your health.</p>
         </div>
-        <div class="flex items-center gap-4 bg-surface-container-low p-2 rounded-full">
-            <span class="font-headline font-bold text-lg px-4 italic text-primary">
-                {{ $startOfWeek->format('d M') }} — {{ $startOfWeek->copy()->endOfWeek()->format('d M') }}
-            </span>
+        <div class="bg-white px-6 py-3 rounded-full shadow-sm border border-zinc-100 font-headline font-bold text-primary italic">
+            {{ $startOfWeek->format('d M') }} — {{ $startOfWeek->copy()->endOfWeek()->format('d M') }}
         </div>
     </section>
 
@@ -81,7 +105,7 @@
             <div class="col-span-1 pt-20 flex flex-col gap-6">
                 @foreach(['breakfast', 'lunch', 'dinner', 'snack'] as $type)
                     <div class="h-48 flex items-center justify-end pr-4">
-                        <span class="font-bold text-xs uppercase tracking-widest text-on-surface-variant opacity-60">{{ $type }}</span>
+                        <span class="font-bold text-[10px] uppercase tracking-widest text-zinc-400">{{ $type }}</span>
                     </div>
                 @endforeach
             </div>
@@ -93,51 +117,40 @@
                     $isToday = $currentDate->isToday();
                 @endphp
 
-                <div class="col-span-1 flex flex-col gap-6 {{ $isToday ? 'bg-primary/5 rounded-xl p-2 -m-2 border-2 border-primary/20' : '' }}">
-                    <div class="text-center mb-4 {{ $isToday ? 'pt-2' : '' }}">
+                <div class="col-span-1 flex flex-col gap-6">
+                    <div class="text-center mb-4 {{ $isToday ? 'bg-primary/5 rounded-t-xl py-2 border-x-2 border-t-2 border-primary/20' : '' }}">
                         <span class="block font-headline font-extrabold text-2xl {{ $isToday ? 'text-primary' : '' }}">{{ $currentDate->format('d') }}</span>
-                        <span class="block font-bold text-xs uppercase tracking-tighter {{ $isToday ? 'text-primary' : 'text-on-surface-variant' }}">
-                            {{ $currentDate->format('l') }}
-                        </span>
+                        <span class="block font-bold text-[10px] uppercase tracking-tighter {{ $isToday ? 'text-primary' : 'text-zinc-400' }}">{{ $currentDate->format('l') }}</span>
                     </div>
 
                     @foreach(['breakfast', 'lunch', 'dinner', 'snack'] as $type)
-                        @php 
-                            // On cherche si un repas existe pour ce jour et ce type
-                            $plan = $weeklyPlans->get($dateString)?->where('meal_type', $type)->first();
-                        @endphp
+                        @php $plan = isset($weeklyPlans[$dateString]) ? $weeklyPlans[$dateString]->where('meal_type', $type)->first() : null; @endphp
 
                         @if($plan)
-                            <div class="h-48 group relative bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-all border border-transparent hover:border-primary/20 overflow-hidden">
-                                <div class="absolute top-3 left-3 px-2 py-0.5 {{ $plan->isDone ? 'bg-zinc-100 text-zinc-400' : 'bg-primary-fixed text-primary' }} rounded-full text-[10px] font-bold uppercase tracking-wider">
-                                    {{ $plan->isDone ? 'Completed' : 'Planned' }}
+                            <div class="h-48 group relative bg-white rounded-xl p-4 shadow-sm border border-transparent hover:border-primary/20 transition-all overflow-hidden">
+                                <span class="text-[9px] font-black uppercase text-primary bg-primary-fixed px-2 py-0.5 rounded-full">Planned</span>
+                                <div class="mt-4">
+                                    <h4 class="font-headline font-bold text-on-surface leading-tight text-sm">{{ $plan->recipe->name }}</h4>
+                                    <p class="text-[10px] font-medium text-zinc-400 mt-1">{{ $plan->serving }} Servings</p>
                                 </div>
-                                <div class="mt-6">
-                                    <h4 class="font-headline font-bold text-on-surface leading-tight text-lg {{ $plan->isDone ? 'line-through opacity-50' : '' }}">
-                                        {{ $plan->recipe->title }}
-                                    </h4>
-                                    <div class="flex items-center gap-2 mt-2">
-                                        <span class="material-symbols-outlined text-primary text-sm">group</span>
-                                        <span class="text-xs font-medium">{{ $plan->serving }} Pers.</span>
-                                    </div>
-                                </div>
-                                <img src="{{ $plan->recipe->image_path ? asset('storage/'.$plan->recipe->image_path) : 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c' }}" 
-                                     class="absolute bottom-4 right-4 w-16 h-16 rounded-lg object-cover rotate-3 group-hover:rotate-0 transition-transform">
+                                <img src="https://ui-avatars.com/api/?name={{ urlencode($plan->recipe->name) }}&background=d9eaa3&color=56642b" class="absolute bottom-4 right-4 w-12 h-12 rounded-lg rotate-3 group-hover:rotate-0 transition-transform">
                                 
-                                <form action="{{ route('meal_plans.destroy', $plan) }}" method="POST" class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <form action="{{ route('meal_plans.destroy', $plan->id) }}" method="POST" class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                     @csrf @method('DELETE')
-                                    <button type="submit" class="text-red-400 hover:text-red-600">
-                                        <span class="material-symbols-outlined text-sm">delete</span>
-                                    </button>
+                                    <button type="submit" class="text-red-400 hover:text-red-600"><span class="material-symbols-outlined text-sm">delete</span></button>
                                 </form>
                             </div>
                         @else
-                            <a href="{{ route('recipes.index') }}" class="h-48 border-2 border-dashed border-zinc-200 rounded-xl flex flex-col items-center justify-center gap-2 hover:bg-white hover:border-primary transition-all group">
-                                <div class="w-10 h-10 rounded-full bg-zinc-50 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                    <span class="material-symbols-outlined text-zinc-400">add</span>
-                                </div>
-                                <span class="font-bold text-[10px] uppercase tracking-widest text-zinc-400">Add {{ $type }}</span>
-                            </a>
+                            <div class="relative h-48 group">
+                                <button onclick="toggleRecipeMenu('menu-{{ $dateString }}-{{ $type }}')" class="w-full h-full border-2 border-dashed border-zinc-200 rounded-xl flex flex-col items-center justify-center gap-2 hover:bg-white hover:border-primary transition-all">
+                                    <div class="w-8 h-8 rounded-full bg-zinc-50 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                        <span class="material-symbols-outlined text-zinc-300">add</span>
+                                    </div>
+                                    <span class="font-bold text-[9px] uppercase tracking-widest text-zinc-400">Add {{ $type }}</span>
+                                </button>
+
+                                @include('meal_plans.menu', ['dateString' => $dateString, 'type' => $type, 'availableRecipes' => $availableRecipes])
+                            </div>
                         @endif
                     @endforeach
                 </div>
@@ -146,9 +159,21 @@
     </div>
 </main>
 
-<a href="{{ route('recipes.index') }}" class="fixed bottom-10 right-10 w-16 h-16 bg-primary text-white rounded-full shadow-xl flex items-center justify-center group hover:scale-110 transition-all z-40">
-    <span class="material-symbols-outlined text-3xl group-hover:rotate-90 transition-transform">add</span>
-</a>
+<script>
+    function toggleRecipeMenu(menuId) {
+        document.querySelectorAll('[id^="menu-"]').forEach(menu => {
+            if (menu.id !== menuId) menu.classList.add('hidden');
+        });
+        const menu = document.getElementById(menuId);
+        menu.classList.toggle('hidden');
+    }
+
+    window.onclick = function(event) {
+        if (!event.target.closest('.relative')) {
+            document.querySelectorAll('[id^="menu-"]').forEach(menu => menu.classList.add('hidden'));
+        }
+    }
+</script>
 
 </body>
 </html>

@@ -14,17 +14,23 @@ class MealPlanController extends Controller
      */
     public function index()
     {
-        $startOfWeek = Carbon::now()->startOfWeek();
-        $endOfWeek = Carbon::now()->endOfWeek();
+        $startOfWeek = now()->startOfWeek();
+        $endOfWeek = now()->endOfWeek();
 
         // Récupère les plans et les groupe par date pour un accès facile en Blade
-        $weeklyPlans = MealPlan::with('recipe')
+        $weeklyPlans = auth()->user()->mealPlans()->with('recipe')
             ->where('user_id', auth()->id())
             ->whereBetween('planned_date', [$startOfWeek, $endOfWeek])
             ->get()
             ->groupBy('planned_date');
 
-        return view('meal_plans.index', compact('weeklyPlans', 'startOfWeek'));
+        // $availableRecipes = Recipe::where('user_id', $user->id)
+        //     ->orWhere('is_public', true)
+        //     ->select('id', 'title') 
+        //     ->get();
+        $availableRecipes = auth()->user()->recipes()->select('id', 'title')->get();
+
+        return view('meal_plans.index', compact('weeklyPlans', 'startOfWeek', 'availableRecipes'));
     }
 
     /**
@@ -61,5 +67,15 @@ class MealPlanController extends Controller
         $mealPlan->update(['isDone' => !$mealPlan->isDone]);
 
         return response()->json(['success' => true]);
+    }
+
+    public function destroy(MealPlan $mealPlan)
+    {
+        if ($mealPlan->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $mealPlan->delete();
+        return back()->with('success', 'Repas supprimé.');
     }
 }
