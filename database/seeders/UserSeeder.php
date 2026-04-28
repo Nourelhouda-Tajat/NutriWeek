@@ -16,23 +16,29 @@ class UserSeeder extends Seeder
     {
         User::create([
             'username' => 'Nour',
-            'email' => 'nour@example.com',
+            'email' => 'nour@nutriweek.com',
             'password' => bcrypt('password'),
             'role' => 'user'
         ]);
 
         User::create([
             'username' => 'bob',
-            'email' => 'bob@example.com',
+            'email' => 'bob@nutriweek.com',
             'password' => bcrypt('password'),
             'role' => 'user'
         ]);
 
         User::create([
             'username' => 'alice',
-            'email' => 'alice@example.com',
+            'email' => 'alice@nutriweek.com',
             'password' => bcrypt('password'),
             'role' => 'user'
+        ]);
+        User::create([
+            'username' => 'admin',
+            'email' => 'admin@nutriweek.com',
+            'password' => bcrypt('password'),
+            'role' => 'admin', 
         ]);
     }
 }
