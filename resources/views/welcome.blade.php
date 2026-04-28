@@ -87,8 +87,7 @@
                 The digital garden for your kitchen. Track ingredients, discover vibrant recipes, and curate your weekly nutrition with editorial precision.
             </p>
             <div class="flex flex-wrap gap-4 pt-4">
-                <a href="{{ auth()->check() ? route('dashboard') : route('register') }}" 
-                   class="px-8 py-4 rounded-full bg-gradient-to-r from-primary to-primary-container text-on-primary font-bold uppercase tracking-wider hover:shadow-lg transition-all text-center">
+                <a href="{{ auth()->check() ? route('dashboard') : route('register') }}" class="px-8 py-4 rounded-full bg-gradient-to-r from-primary to-primary-container text-on-primary font-bold uppercase tracking-wider hover:shadow-lg transition-all text-center">
                     {{ auth()->check() ? 'Go to Dashboard' : 'Get Started Free' }}
                 </a>
                 <a href="#features" class="px-8 py-4 rounded-full bg-surface-container-highest text-on-surface font-bold uppercase tracking-wider hover:bg-surface-variant transition-all text-center">
@@ -98,8 +97,7 @@
         </div>
         <div class="relative group">
             <div class="absolute -inset-4 bg-secondary-fixed/20 rounded-xl blur-3xl group-hover:bg-secondary-fixed/30 transition-all duration-500"></div>
-            <img class="relative w-full aspect-[4/5] object-cover rounded-xl shadow-xl grayscale-[0.2] hover:grayscale-0 transition-all duration-700" 
-                 src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c" />
+            <img class="relative w-full aspect-[4/5] object-cover rounded-xl shadow-xl grayscale-[0.2] hover:grayscale-0 transition-all duration-700" src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c" />
             <div class="absolute -bottom-8 -left-8 bg-white p-6 rounded-lg shadow-xl hidden md:block max-w-[200px] border border-zinc-100">
                 <p class="text-xs font-bold text-secondary uppercase tracking-widest mb-1">Featured Recipe</p>
                 <p class="font-headline font-bold text-on-surface">Golden Harvest Quinoa Bowl</p>
@@ -139,6 +137,70 @@
         </div>
     </section>
 
+    <section class="py-24 max-w-7xl mx-auto px-8">
+        <div class="text-center mb-20">
+            <span class="text-secondary font-bold uppercase tracking-[0.2em] text-sm">Our Process</span>
+            <h2 class="font-headline text-4xl font-extrabold mt-4 tracking-tight">Three steps to culinary peace</h2>
+        </div>
+        <div class="relative grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div class="text-center group">
+                <div class="relative inline-block mb-8">
+                    <div class="w-24 h-24 rounded-full bg-surface-container-highest flex items-center justify-center text-3xl font-bold font-headline text-primary group-hover:scale-110 transition-transform">1</div>
+                    <div class="hidden md:block absolute top-12 -right-24 w-24 border-t-2 border-dotted border-zinc-300"></div>
+                </div>
+                <h3 class="font-headline text-xl font-bold mb-3">Add Recipes</h3>
+                <p class="text-on-surface-variant px-4">Clip from your favorite food blogs or enter your family secrets manually.</p>
+            </div>
+            <div class="text-center group">
+                <div class="relative inline-block mb-8">
+                    <div class="w-24 h-24 rounded-full bg-surface-container-highest flex items-center justify-center text-3xl font-bold font-headline text-primary group-hover:scale-110 transition-transform">2</div>
+                    <div class="hidden md:block absolute top-12 -right-24 w-24 border-t-2 border-dotted border-zinc-300"></div>
+                </div>
+                <h3 class="font-headline text-xl font-bold mb-3">Plan Your Week</h3>
+                <p class="text-on-surface-variant px-4">Map out breakfast, lunch, and dinner to stay consistent with your goals.</p>
+            </div>
+            <div class="text-center group">
+                <div class="relative inline-block mb-8">
+                    <div class="w-24 h-24 rounded-full bg-surface-container-highest flex items-center justify-center text-3xl font-bold font-headline text-primary group-hover:scale-110 transition-transform">3</div>
+                </div>
+                <h3 class="font-headline text-xl font-bold mb-3">Generate List</h3>
+                <p class="text-on-surface-variant px-4">Sync to your phone instantly and head to the market with a sorted plan.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-surface-container-low py-24">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="mb-16">
+                <h2 class="font-headline text-4xl font-extrabold tracking-tight">The community kitchen</h2>
+                <p class="text-on-surface-variant mt-4">Join thousands of home cooks simplifying their daily routines.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-xl shadow-sm flex flex-col justify-between">
+                    <p class="text-lg italic text-on-surface mb-8 leading-relaxed">"NutriWeek changed how I view grocery shopping. It’s no longer a chore."</p>
+                    <div class="flex items-center gap-4">
+                        <img class="w-12 h-12 rounded-full object-cover" src="https://ui-avatars.com/api/?name=Sarah+Jenkins&background=56642b&color=fff"/>
+                        <div><p class="font-bold font-headline">Sarah Jenkins</p><p class="text-xs text-on-surface-variant uppercase">Nutritionist</p></div>
+                    </div>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-sm flex flex-col justify-between">
+                    <p class="text-lg italic text-on-surface mb-8 leading-relaxed">"The editorial design makes planning actually enjoyable. It feels like a magazine."</p>
+                    <div class="flex items-center gap-4">
+                        <img class="w-12 h-12 rounded-full object-cover" src="https://ui-avatars.com/api/?name=Marcus+Chen&background=9b4500&color=fff"/>
+                        <div><p class="font-bold font-headline">Marcus Chen</p><p class="text-xs text-on-surface-variant uppercase">Designer</p></div>
+                    </div>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-sm flex flex-col justify-between">
+                    <p class="text-lg italic text-on-surface mb-8 leading-relaxed">"Simple, effective, and beautiful. My meal prep time has been cut in half."</p>
+                    <div class="flex items-center gap-4">
+                        <img class="w-12 h-12 rounded-full object-cover" src="https://ui-avatars.com/api/?name=Elena+Rodriguez&background=8a9a5b&color=fff"/>
+                        <div><p class="font-bold font-headline">Elena Rodriguez</p><p class="text-xs text-on-surface-variant uppercase">Parent</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="max-w-7xl mx-auto px-8 py-24">
         <div class="bg-primary rounded-3xl p-12 md:p-24 text-center text-on-primary relative overflow-hidden">
             <div class="absolute top-0 right-0 w-64 h-64 bg-primary-container/20 rounded-full -mr-32 -mt-32"></div>
@@ -154,7 +216,7 @@
 </main>
 
 <footer class="bg-stone-50 w-full pt-16 pb-8 text-sm">
-    <div class="max-w-7xl mx-auto px-8 grid grid-cols-1 md:grid-cols-4 gap-12">
+    <div class="max-w-7xl mx-auto px-8 grid grid-cols-1 md:grid-cols-4 gap-12 text-center md:text-left">
         <div class="space-y-4">
             <div class="text-xl font-bold text-lime-900">NutriWeek</div>
             <p class="text-stone-500">Elevating daily nutrition through design.</p>
