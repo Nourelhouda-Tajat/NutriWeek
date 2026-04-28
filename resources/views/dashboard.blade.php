@@ -32,35 +32,7 @@
 </head>
 <body class="min-h-screen pb-24 md:pb-0">
 
-<nav class="fixed top-0 w-full z-50 bg-white/60 backdrop-blur-md shadow-sm border-b border-zinc-100">
-    <div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto font-headline tracking-tight">
-        <a href="{{ url('/') }}" class="text-2xl font-bold text-lime-900">NutriWeek</a>
-        <div class="hidden md:flex items-center gap-8">
-            <a class="text-sm font-semibold text-primary px-4 py-2 rounded-full bg-primary/5" href="{{ route('dashboard') }}">Home</a>
-            <a class="text-stone-500 hover:text-lime-700 transition-all font-semibold" href="{{ route('recipes.index') }}">Recipes</a>
-            <a class="text-stone-500 hover:text-lime-700 transition-all font-semibold" href="{{ route('meal_plans.index') }}">Meal Plans</a>
-            <a class="text-stone-500 hover:text-lime-700 transition-all font-semibold" href="{{ route('shopping_list.index') }}">Shopping</a>
-        </div>
-        <div class="flex items-center gap-4">
-            <div class="hidden md:flex flex-col items-end">
-                <span class="font-headline font-bold text-xs leading-none">{{ $user->username }}</span>
-                <span class="text-[10px] text-zinc-500 font-medium uppercase tracking-tighter">{{ $user->role }} Member</span>
-            </div>
-            <div class="relative group">
-                <img class="w-9 h-9 rounded-full border border-zinc-200" src="https://ui-avatars.com/api/?name={{ $user->username }}&background=56642b&color=fff"/>
-                <div class="absolute top-full right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-zinc-100 hidden group-hover:block overflow-hidden py-1 z-50">
-                    <form action="{{ route('logout') }}" method="POST">
-                        @csrf
-                        <button type="submit" class="w-full text-left block px-4 py-2 text-sm text-red-600 hover:bg-red-50">Sign Out</button>
-                    </form>
-                </div>
-            </div>
-            <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-stone-600">
-                <span class="material-symbols-outlined">menu</span>
-            </button>
-        </div>
-    </div>
-</nav>
+@include('layouts.nav')
 
 <main class="pt-24 pb-12 px-6 max-w-7xl mx-auto">
     <section class="mb-12">

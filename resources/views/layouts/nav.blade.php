@@ -1,30 +1,65 @@
-<nav class="bg-white/80 backdrop-blur-md sticky top-0 z-50 py-4 px-8 flex justify-between items-center border-b border-gray-100">
-    <div class="flex items-center gap-2">
-        <div class="w-10 h-10 bg-[#748E54] rounded-full flex items-center justify-center text-white font-bold">
-            <img src="{{ asset('logo.png') }}" alt="NW" class="w-6 h-6">
+<nav class="fixed top-0 w-full z-50 bg-white/60 backdrop-blur-md shadow-sm border-b border-zinc-100">
+    <div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto font-headline tracking-tight">
+        
+        <a href="{{ url('/') }}" class="text-2xl font-bold text-lime-900 flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">potted_plant</span>
+            NutriWeek
+        </a>
+        
+        <div class="hidden md:flex items-center gap-2">
+            <a class="px-4 py-2 rounded-full text-sm font-bold transition-all {{ request()->routeIs('dashboard') ? 'text-primary bg-primary/5' : 'text-stone-500 hover:text-lime-700 hover:bg-stone-50' }}" 
+               href="{{ route('dashboard') }}">Home</a>
+            
+            <a class="px-4 py-2 rounded-full text-sm font-bold transition-all {{ request()->routeIs('recipes.*') ? 'text-primary bg-primary/5' : 'text-stone-500 hover:text-lime-700 hover:bg-stone-50' }}" 
+               href="{{ route('recipes.index') }}">Recipes</a>
+            
+            <a class="px-4 py-2 rounded-full text-sm font-bold transition-all {{ request()->routeIs('meal_plans.*') ? 'text-primary bg-primary/5' : 'text-stone-500 hover:text-lime-700 hover:bg-stone-50' }}" 
+               href="{{ route('meal_plans.index') }}">Meal Plans</a>
+            
+            <a class="px-4 py-2 rounded-full text-sm font-bold transition-all {{ request()->routeIs('shopping_list.*') ? 'text-primary bg-primary/5' : 'text-stone-500 hover:text-lime-700 hover:bg-stone-50' }}" 
+               href="{{ route('shopping_list.index') }}">Shopping</a>
         </div>
-        <span class="text-xl font-bold text-[#2D3323] tracking-tight">NutriWeek</span>
-    </div>
 
-    <div class="hidden md:flex gap-8 text-[#5C634D] font-medium">
-        <a href="/" class="{{ request()->is('/') ? 'text-[#748E54]' : 'hover:text-[#748E54]' }} transition-colors">Home</a>
-        <a href="{{ route('recipes.index') }}" class="{{ request()->is('recipes*') ? 'text-[#748E54]' : 'hover:text-[#748E54]' }} transition-colors">Recipes</a>
-        <a href="#" class="hover:text-[#748E54] transition-colors">My Week</a>
-        <a href="#" class="hover:text-[#748E54] transition-colors">Shopping List</a>
-        @if(auth()->user() && auth()->user()->role === 'admin')
-            <a href="#" class="hover:text-[#748E54] transition-colors">Admin Panel</a>
-        @endif
-    </div>
-
-    <div class="flex items-center gap-4">
-        @auth
-            <div class="flex items-center gap-3 bg-[#F9F9F4] py-1 pl-4 pr-1 rounded-full border border-gray-100">
-                <span class="text-sm font-semibold text-[#2D3323]">{{ auth()->user()->username }}</span>
-                <img src="https://ui-avatars.com/api/?name={{ auth()->user()->username }}&background=748E54&color=fff" class="w-8 h-8 rounded-full shadow-sm">
+        <div class="flex items-center gap-4">
+            <div class="hidden md:flex flex-col items-end">
+                <span class="font-headline font-bold text-xs leading-none">{{ auth()->user()->username }}</span>
+                <span class="text-[10px] text-zinc-500 font-medium uppercase tracking-tighter">{{ auth()->user()->role }} Member</span>
             </div>
-        @else
-            <a href="{{ route('login') }}" class="text-[#748E54] font-bold px-4">Login</a>
-            <a href="{{ route('register') }}" class="bg-[#748E54] text-white px-6 py-2 rounded-full font-bold shadow-md hover:bg-[#5C634D] transition-all">Sign Up</a>
-        @endauth
+            
+            <div class="relative group">
+                <img class="w-9 h-9 rounded-full border border-zinc-200 cursor-pointer object-cover" 
+                     src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->username) }}&background=56642b&color=fff"/>
+                
+                <div class="absolute top-full right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-zinc-100 hidden group-hover:block overflow-hidden py-1 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="w-full text-left block px-4 py-2 text-sm text-red-600 hover:bg-red-50 font-semibold transition-colors">
+                            <span class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-sm">logout</span>
+                                Sign Out
+                            </span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-stone-600 hover:bg-stone-100 rounded-full transition-colors">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+        </div>
+    </div>
+
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-zinc-100 p-6 space-y-4">
+        <a class="block font-bold {{ request()->routeIs('dashboard') ? 'text-primary' : 'text-stone-600' }}" href="{{ route('dashboard') }}">Home</a>
+        <a class="block font-bold {{ request()->routeIs('recipes.*') ? 'text-primary' : 'text-stone-600' }}" href="{{ route('recipes.index') }}">Recipes</a>
+        <a class="block font-bold {{ request()->routeIs('meal_plans.*') ? 'text-primary' : 'text-stone-600' }}" href="{{ route('meal_plans.index') }}">Meal Plans</a>
+        <a class="block font-bold {{ request()->routeIs('shopping_list.*') ? 'text-primary' : 'text-stone-600' }}" href="{{ route('shopping_list.index') }}">Shopping List</a>
     </div>
 </nav>
+
+<script>
+    function toggleMobileMenu() {
+        const menu = document.getElementById('mobile-menu');
+        menu.classList.toggle('hidden');
+    }
+</script>

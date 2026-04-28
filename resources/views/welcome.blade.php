@@ -39,42 +39,7 @@
 </head>
 <body class="bg-surface font-body text-on-surface selection:bg-secondary-fixed">
 
-<nav class="fixed top-0 w-full z-50 bg-white/60 backdrop-blur-md shadow-sm border-b border-zinc-100">
-    <div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto font-headline tracking-tight">
-        <a href="{{ url('/') }}" class="text-2xl font-bold text-lime-900">NutriWeek</a>
-        
-        <div class="hidden md:flex items-center gap-8">
-            <a class="text-stone-500 hover:text-lime-700 transition-all" href="{{ route('recipes.index') }}">Recipes</a>
-            <a class="text-stone-500 hover:text-lime-700 transition-all" href="{{ route('meal_plans.index') }}">Meal Plans</a>
-            <a class="text-stone-500 hover:text-lime-700 transition-all" href="{{ route('shopping_list.index') }}">Shopping</a>
-        </div>
-
-        <div class="flex items-center gap-4">
-            @guest
-                <a href="{{ route('login') }}" class="px-6 py-2 rounded-full text-stone-600 hover:bg-stone-100/50 transition-all">Login</a>
-                <a href="{{ route('register') }}" class="px-6 py-2 rounded-full bg-primary text-on-primary font-semibold hover:opacity-90 transition-all">Sign Up</a>
-            @else
-                <div class="flex items-center gap-4">
-                    <a href="{{ route('dashboard') }}" class="font-bold text-primary">{{ auth()->user()->username }}</a>
-                    <form action="{{ route('logout') }}" method="POST" class="inline">
-                        @csrf
-                        <button type="submit" class="text-xs text-red-600 uppercase font-bold hover:underline">Logout</button>
-                    </form>
-                </div>
-            @endguest
-            
-            <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-stone-600">
-                <span class="material-symbols-outlined">menu</span>
-            </button>
-        </div>
-    </div>
-    
-    <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-zinc-100 p-6 space-y-4">
-        <a class="block text-stone-600 font-bold" href="{{ route('recipes.index') }}">Recipes</a>
-        <a class="block text-stone-600 font-bold" href="{{ route('meal_plans.index') }}">Meal Plans</a>
-        <a class="block text-stone-600 font-bold" href="{{ route('shopping_list.index') }}">Shopping List</a>
-    </div>
-</nav>
+@include('layouts.nav')
 
 <main class="pt-24">
     <section class="max-w-7xl mx-auto px-8 py-12 md:py-24 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
