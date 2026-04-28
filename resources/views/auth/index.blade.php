@@ -47,7 +47,7 @@
                     <a href="{{ route('login') }}" class="flex-1 py-3 text-center rounded-lg {{ request()->routeIs('login') ? 'bg-white text-primary font-bold shadow-sm' : 'text-zinc-500' }}">Login</a>
                     <a href="{{ route('register') }}" class="flex-1 py-3 text-center rounded-lg {{ request()->routeIs('register') ? 'bg-white text-primary font-bold shadow-sm' : 'text-zinc-500' }}">Sign Up</a>
                 </div>
-
+                
                 @if(request()->routeIs('login'))
                     @include('auth.login')
                 @else
@@ -55,6 +55,7 @@
                 @endif
             </div>
         </section>
+        
     </main>
 </body>
 </html>

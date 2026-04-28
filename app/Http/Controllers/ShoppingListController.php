@@ -2,6 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+
+class ShoppingListController extends Controller
+{
+    <?php
+
+namespace App\Http\Controllers;
+
 use App\Models\MealPlan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -25,6 +33,7 @@ class ShoppingListController extends Controller
 
         foreach ($plans as $plan) {
             foreach ($plan->recipe->ingredients as $ingredient) {
+                // On calcule la dose nécessaire selon le nombre de personnes prévu
                 // Formule : (Quantité de base / Portions de base) * Portions prévues
                 $neededQuantity = ($ingredient->pivot->quantity / $plan->recipe->servings) * $plan->serving;
                 
@@ -49,4 +58,5 @@ class ShoppingListController extends Controller
             'startOfWeek' => $startOfWeek
         ]);
     }
+}
 }
