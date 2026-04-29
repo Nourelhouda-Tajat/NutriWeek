@@ -18,13 +18,16 @@
                 <input type="hidden" name="recipe_id" value="{{ $recipe->id }}">
                 <input type="hidden" name="planned_date" value="{{ $dateString }}">
                 <input type="hidden" name="meal_type" value="{{ $type }}">
-                <input type="hidden" name="serving" value="2"> <button type="submit" class="w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold text-zinc-600 hover:bg-primary/10 hover:text-primary transition-all flex justify-between items-center group/item">
-                    <span class="truncate max-w-[180px]">{{ $recipe->name }}</span>
-                    <span class="material-symbols-outlined text-[10px] opacity-0 group-hover/item:opacity-100 transition-opacity">add_circle</span>
+                <input type="hidden" name="serving" value="2">
+                
+                {{-- Ici, on s'assure que le texte est bien noir/zinc et que le titre s'affiche --}}
+                <button type="submit" class="w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold text-zinc-700 hover:bg-primary/10 hover:text-primary transition-all flex justify-between items-center group/item">
+                    <span class="truncate max-w-[200px]">{{ $recipe->title }}</span>
+                    <span class="material-symbols-outlined text-primary text-sm opacity-0 group-hover/item:opacity-100 transition-opacity">add_circle</span>
                 </button>
             </form>
         @empty
-            <p class="text-[10px] text-zinc-400 text-center py-4 italic">No recipes found in your garden.</p>
+            <p class="text-[10px] text-zinc-400 text-center py-4 italic">No recipes found.</p>
         @endforelse
     </div>
 </div>

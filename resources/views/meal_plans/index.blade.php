@@ -64,17 +64,22 @@
                     </div>
 
                     @foreach(['breakfast', 'lunch', 'dinner', 'snack'] as $type)
-                        @php $plan = isset($weeklyPlans[$dateString]) ? $weeklyPlans[$dateString]->where('meal_type', $type)->first() : null; @endphp
+                        @php 
+                            $plan = isset($weeklyPlans[$dateString]) ? $weeklyPlans[$dateString]->where('meal_type', $type)->first() : null; 
+                        @endphp
 
                         @if($plan)
-                            <div class="h-48 group relative bg-white rounded-xl p-4 shadow-sm border border-transparent hover:border-primary/20 transition-all overflow-hidden">
-                                <span class="text-[9px] font-black uppercase text-primary bg-primary-fixed px-2 py-0.5 rounded-full">Planned</span>
-                                <div class="mt-4">
-                                    <h4 class="font-headline font-bold text-on-surface leading-tight text-sm">{{ $plan->recipe->name }}</h4>
-                                    <p class="text-[10px] font-medium text-zinc-400 mt-1">{{ $plan->serving }} Servings</p>
+                            <div class="h-48 group relative bg-white rounded-xl p-4 shadow-sm border border-primary/20 hover:shadow-md transition-all flex flex-col justify-between">
+                                <div>
+                                    <span class="text-[9px] font-black uppercase text-primary bg-primary/10 px-2 py-0.5 rounded-full">Planned</span>
+                                    {{-- Le titre devient un lien vers la recette --}}
+                                    <a href="{{ route('recipes.show', $plan->recipe->id) }}" class="block mt-3 font-headline font-bold text-on-surface hover:text-primary transition-colors leading-tight">
+                                        {{ $plan->recipe->title }}
+                                    </a>
+                                    <p class="text-[10px] text-zinc-400 mt-1 italic">{{ $plan->serving }} portions</p>
                                 </div>
-                                <img src="https://ui-avatars.com/api/?name={{ urlencode($plan->recipe->name) }}&background=d9eaa3&color=56642b" class="absolute bottom-4 right-4 w-12 h-12 rounded-lg rotate-3 group-hover:rotate-0 transition-transform">
-                                
+
+                                {{-- Bouton supprimer --}}
                                 <form action="{{ route('meal_plans.destroy', $plan->id) }}" method="POST" class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                     @csrf @method('DELETE')
                                     <button type="submit" class="text-red-400 hover:text-red-600"><span class="material-symbols-outlined text-sm">delete</span></button>
@@ -89,7 +94,7 @@
                                     <span class="font-bold text-[9px] uppercase tracking-widest text-zinc-400">Add {{ $type }}</span>
                                 </button>
 
-                                @include('meal_plans.menu', ['dateString' => $dateString, 'type' => $type, 'availableRecipes' => $availableRecipes])
+                                @include('meal_plans.menu', ['dateString' => $dateString, 'type' => $type])
                             </div>
                         @endif
                     @endforeach

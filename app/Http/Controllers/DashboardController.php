@@ -28,7 +28,7 @@ class DashboardController extends Controller
         })->unique('name')->count();
 
         $weeklyPlans = $plans->groupBy(function($data) {
-            return $data->planned_date->format('D'); 
+            return \Carbon\Carbon::parse($data->planned_date)->format('D');
         });
 
         return view('dashboard', compact('user', 'recipeCount', 'shoppingCount', 'weeklyPlans'));

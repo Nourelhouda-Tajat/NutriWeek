@@ -64,16 +64,20 @@
                     <div class="flex flex-col gap-3 group">
                         <span class="text-[10px] font-bold uppercase text-zinc-400 text-center">{{ $day }}</span>
                         
-                        @if(isset($weeklyPlans[$day]))
+                        @if(isset($weeklyPlans[$day]) && $weeklyPlans[$day]->count() > 0)
                             @foreach($weeklyPlans[$day] as $plan)
-                                <div class="aspect-[3/4] bg-primary-fixed rounded-lg p-3 flex flex-col justify-between border-2 border-primary/10">
-                                    <span class="text-xs font-headline font-bold text-primary italic">{{ Str::limit($plan->recipe->name, 15) }}</span>
-                                    <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center shadow-sm">
-                                        <span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">restaurant</span>
+                                {{-- On utilise $plan->recipe->title ici --}}
+                                <div class="aspect-[3/4] bg-primary-fixed rounded-lg p-3 flex flex-col justify-between border-2 border-primary/10 mb-2 last:mb-0">
+                                    <span class="text-[10px] font-headline font-bold text-primary italic leading-tight">
+                                        {{ Str::limit($plan->recipe->title, 20) }}
+                                    </span>
+                                    <div class="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center shadow-sm self-end">
+                                        <span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">restaurant</span>
                                     </div>
                                 </div>
                             @endforeach
                         @else
+                            {{-- Si rien n'est planifié pour ce jour --}}
                             <a href="{{ route('meal_plans.index') }}" class="aspect-[3/4] bg-zinc-50 rounded-lg p-3 flex flex-col items-center justify-center border border-dashed border-zinc-200 hover:bg-primary/5 transition-all">
                                 <span class="material-symbols-outlined text-zinc-300">add</span>
                             </a>

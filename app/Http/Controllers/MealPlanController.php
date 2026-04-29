@@ -28,7 +28,7 @@ class MealPlanController extends Controller
         //     ->orWhere('is_public', true)
         //     ->select('id', 'title') 
         //     ->get();
-        $availableRecipes = auth()->user()->recipes()->select('id', 'title')->get();
+        $availableRecipes = auth()->user()->recipes()->orWhere('is_public', true)->select('id', 'title')->get();
 
         return view('meal_plans.index', compact('weeklyPlans', 'startOfWeek', 'availableRecipes'));
     }
@@ -54,7 +54,7 @@ class MealPlanController extends Controller
             'isDone' => false
         ]);
 
-        return redirect()->route('dashboard')->with('success', 'Plat ajouté au jardin de la semaine !');
+        return redirect()->route('meal_plans.index')->with('success', 'Plat ajouté au jardin de la semaine !');
     }
 
     /**
