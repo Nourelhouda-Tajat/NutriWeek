@@ -80,4 +80,3 @@ class IngredientController extends Controller
         return redirect()->route('ingredients.index')->with('success', 'Ingrédient supprimé.');
     }
 }
-a

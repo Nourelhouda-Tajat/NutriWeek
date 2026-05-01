@@ -2,29 +2,26 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Ingredient;
 
-
 class IngredientSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         $ingredients = [
-            ['name' => 'Poulet', 'default_unit' => 'g'],
-            ['name' => 'Riz', 'default_unit' => 'g'],
-            ['name' => 'Avocat', 'default_unit' => 'unité'],
-            ['name' => 'Pain', 'default_unit' => 'tranche'],
-            ['name' => 'Oeuf', 'default_unit' => 'unité'],
-            ['name' => 'Lait', 'default_unit' => 'ml'],
+            ['name' => 'Poulet', 'default_unit' => 'g', 'category' => 'Protines'],
+            ['name' => 'papriqua', 'default_unit' => 'g', 'category' => 'Epises'],
+            ['name' => 'Riz', 'default_unit' => 'g', 'category' => 'Féculents'],
+            ['name' => 'Avocat', 'default_unit' => 'unité', 'category' => 'Fruits'],
+            ['name' => 'Pain', 'default_unit' => 'tranche', 'category' => 'Féculents'],
+            ['name' => 'Oeuf', 'default_unit' => 'unité', 'category' => 'Produits Laitiers'],
+            ['name' => 'Lait', 'default_unit' => 'ml', 'category' => 'Produits Laitiers'],
+            ['name' => 'Tomate', 'default_unit' => 'g', 'category' => 'Légumes'],
         ];
 
         foreach ($ingredients as $ing) {
-            Ingredient::create($ing);
+            Ingredient::updateOrCreate(['name' => $ing['name']], $ing);
         }
     }
 }
