@@ -11,13 +11,29 @@ use Illuminate\Support\Facades\DB;
 
 class RecipeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $recipes = Recipe::with('category', 'user')
-            ->where('is_public', true)
-            ->orWhere('user_id', auth()->id())
-            ->latest()
-            ->get();
+        $query = Recipe::with(['category', 'user'])
+            ->where(function ($q) {
+                $q->where('is_public', true)
+                  ->orWhere('user_id', auth()->id());
+            });
+
+        // Search par titre de recette uniquement
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where('title', 'like', "%{$search}%");
+        }
+
+        // Filtre par catégorie exacte
+        if ($request->filled('category')) {
+            $category = $request->category;
+            $query->whereHas('category', function($q) use ($category) {
+                $q->where('name', $category);
+            });
+        }
+
+        $recipes = $query->latest()->get();
 
         return view('recipes.index', compact('recipes'));
     }
