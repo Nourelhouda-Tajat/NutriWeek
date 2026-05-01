@@ -44,7 +44,7 @@
         <p class="text-on-surface-variant text-lg max-w-2xl">Cultivate your culinary collection. Fill in the details below to add a fresh masterpiece to your garden.</p>
     </header>
 
-    <form action="{{ route('recipes.store') }}" method="POST" class="space-y-10">
+    <form action="{{ route('recipes.store') }}" method="POST" enctype="multipart/form-data" class="space-y-10">
         @csrf
 
         <!-- SECTION 1: INFOS DE BASE (Ce qui manquait) -->
@@ -64,6 +64,7 @@
                     </select>
                 </div>
 
+
                 <div class="space-y-2">
                     <label class="text-xs font-bold uppercase tracking-widest text-primary">Instructions</label>
                     <textarea name="instructions" class="w-full bg-surface-container-low border-none rounded-lg p-4 focus:ring-2 focus:ring-primary/30 resize-none" placeholder="Step by step preparation..." rows="6" required></textarea>
@@ -71,6 +72,24 @@
             </div>
 
             <div class="bg-surface-container-high rounded-xl p-8 flex flex-col space-y-6">
+                
+                <!-- Visibility Toggle (Smooth Animated) -->
+                <div class="relative flex w-full bg-surface-container-lowest p-1 rounded-full shadow-inner">
+                    <input type="radio" name="is_public" id="is-public-yes" value="1" class="sr-only peer/public" checked>
+                    <input type="radio" name="is_public" id="is-public-no" value="0" class="sr-only peer/private">
+
+                    <!-- Sliding Green Background -->
+                    <div class="absolute top-1 bottom-1 left-1 w-[calc(50%-0.25rem)] bg-primary rounded-full transition-transform duration-300 ease-out z-0 peer-checked/private:translate-x-[calc(100%+0.5rem)]"></div>
+
+                    <label for="is-public-yes" class="flex-1 text-center cursor-pointer z-10 py-3 text-sm font-bold transition-colors duration-300 text-on-surface-variant peer-checked/public:text-white">
+                        Public
+                    </label>
+                    
+                    <label for="is-public-no" class="flex-1 text-center cursor-pointer z-10 py-3 text-sm font-bold transition-colors duration-300 text-on-surface-variant peer-checked/private:text-white">
+                        Private
+                    </label>
+                </div>
+
                 <div class="space-y-2">
                     <label class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-primary">
                         <span class="material-symbols-outlined text-sm">schedule</span> Prep Time (min)
@@ -83,11 +102,26 @@
                     </label>
                     <input name="servings" class="w-full bg-surface-container-lowest border-none rounded-lg p-4 font-bold focus:ring-2 focus:ring-primary/30" placeholder="4" type="number" required/>
                 </div>
+
                 <div class="pt-4 flex-1">
-                    <div class="w-full h-full min-h-[150px] rounded-lg bg-surface-container-low border-2 border-dashed border-outline-variant flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors cursor-not-allowed">
-                        <span class="material-symbols-outlined text-4xl mb-2">add_a_photo</span>
-                        <span class="text-[10px] font-bold uppercase text-center">Image Support<br>Coming Soon</span>
-                    </div>
+                    <label for="recipe-image" class="w-full h-full min-h-[150px] rounded-lg bg-surface-container-low border-2 border-dashed border-outline-variant flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors cursor-pointer relative overflow-hidden group">
+                        <input type="file" id="recipe-image" name="image" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" onchange="previewImage(event)"/>
+                        
+                        <!-- Image Preview Container -->
+                        <div id="image-preview" class="absolute inset-0 w-full h-full hidden">
+                            <img id="preview-img" src="#" alt="Preview" class="w-full h-full object-cover">
+                            <!-- Overlay pour changer l'image -->
+                            <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <span class="material-symbols-outlined text-white text-3xl">edit</span>
+                            </div>
+                        </div>
+
+                        <!-- Default State -->
+                        <div id="image-placeholder" class="flex flex-col items-center justify-center pointer-events-none">
+                            <span class="material-symbols-outlined text-4xl mb-2">add_a_photo</span>
+                            <span class="text-[10px] font-bold uppercase text-center">Upload Image<br>(Max 2MB)</span>
+                        </div>
+                    </label>
                 </div>
             </div>
         </section>
@@ -109,5 +143,21 @@
     </form>
 </main>
 
+<script>
+    function previewImage(event) {
+        const input = event.target;
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                document.getElementById('preview-img').src = e.target.result;
+                document.getElementById('image-preview').classList.remove('hidden');
+                document.getElementById('image-placeholder').classList.add('hidden');
+            }
+            
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
 </body>
 </html>

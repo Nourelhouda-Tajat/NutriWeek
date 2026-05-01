@@ -45,6 +45,8 @@ class RecipeController extends Controller
             'instructions' => 'required|string',
             'prep_time' => 'required|integer',
             'servings' => 'required|integer',
+            'is_public' => 'boolean',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'ingredients' => 'required|array|min:1',
             'ingredients.*.id' => 'required|exists:ingredients,id',
             'ingredients.*.quantity' => 'required|numeric|gt:0',
@@ -52,6 +54,11 @@ class RecipeController extends Controller
         ]);
 
         return DB::transaction(function () use ($validated, $request) {
+            $imagePath = null;
+            if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store('recipes', 'public');
+            }
+
             $recipe = auth()->user()->recipes()->create([
                 'title' => $validated['title'],
                 'category_id' => $validated['category_id'],
@@ -59,6 +66,8 @@ class RecipeController extends Controller
                 'instructions' => $validated['instructions'],
                 'servings' => $validated['servings'],
                 'prep_time' => $validated['prep_time'],
+                'image_path' => $imagePath,
+                'is_public' => $request->boolean('is_public'),
             ]);
 
             foreach ($validated['ingredients'] as $ing) {
