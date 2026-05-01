@@ -64,22 +64,50 @@
 </header>
 
 <main class="pt-28 pb-32 px-6 max-w-7xl mx-auto">
-    <section class="mb-12">
+    <section class="mb-12 space-y-6">
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div class="space-y-2">
                 <h1 class="text-5xl md:text-6xl font-headline font-extrabold tracking-tight text-on-surface">Digital Garden <span class="text-primary italic">Recipes</span></h1>
                 <p class="text-on-surface-variant max-w-lg font-body leading-relaxed">Curate your culinary journey with nutrient-dense meals tailored for your weekly growth.</p>
             </div>
             
-            <div class="bg-surface-container-low p-4 rounded-xl flex flex-wrap items-center gap-4 shadow-sm">
-                <div class="relative flex-1 min-w-[240px]">
-                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400">search</span>
-                    <input class="w-full bg-white border-none rounded-full py-2.5 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/30 font-body" placeholder="Search ingredients..." type="text"/>
+            <form method="GET" action="{{ route('recipes.index') }}" class="bg-surface-container-low p-4 rounded-xl flex flex-col gap-4 shadow-sm w-full md:w-auto">
+                @if(request('category'))
+                    <input type="hidden" name="category" value="{{ request('category') }}">
+                @endif
+                
+                <!-- Search & Add Recipe -->
+                <div class="flex flex-wrap items-center gap-4 w-full">
+                    <div class="relative flex-1 min-w-[240px]">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400">search</span>
+                        <input name="search" value="{{ request('search') }}" class="w-full bg-white border-none rounded-full py-2.5 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/30 font-body" placeholder="Search " type="text"/>
+                    </div>
+                    <button type="submit" class="hidden"></button>
+                    <a href="{{ route('recipes.create') }}" class="bg-primary text-white px-6 py-2.5 rounded-full text-sm font-bold shadow-md hover:bg-opacity-90 transition-all">
+                        + Add Recipe
+                    </a>
                 </div>
-                <a href="{{ route('recipes.create') }}" class="bg-primary text-white px-6 py-2.5 rounded-full text-sm font-bold shadow-md hover:bg-opacity-90 transition-all">
-                    + Add Recipe
-                </a>
-            </div>
+
+                <!-- Filter Buttons -->
+                <div class="flex flex-wrap items-center gap-2 pt-1 border-t border-zinc-200/50">
+                    @php
+                        $categories = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
+                        $currentCategory = request('category');
+                    @endphp
+                    
+                    <a href="{{ route('recipes.index', ['search' => request('search')]) }}" 
+                       class="px-4 py-1.5 rounded-full text-xs font-bold border transition-all {{ !$currentCategory ? 'bg-primary text-white border-primary shadow-sm' : 'bg-white text-on-surface-variant border-zinc-200 hover:border-primary hover:text-primary' }}">
+                        All
+                    </a>
+                    
+                    @foreach($categories as $cat)
+                        <a href="{{ route('recipes.index', ['category' => $cat, 'search' => request('search')]) }}" 
+                           class="px-4 py-1.5 rounded-full text-xs font-bold border transition-all {{ $currentCategory === $cat ? 'bg-primary text-white border-primary shadow-sm' : 'bg-white text-on-surface-variant border-zinc-200 hover:border-primary hover:text-primary' }}">
+                            {{ $cat }}
+                        </a>
+                    @endforeach
+                </div>
+            </form>
         </div>
     </section>
 
