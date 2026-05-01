@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MealPlanController;
+use App\Http\Controllers\IngredientController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -23,6 +24,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('recipes', RecipeController::class);
+    Route::get('/api/ingredients/by-category', [IngredientController::class, 'getByCategory'])->name('ingredients.by_category');
+    Route::resource('ingredients', IngredientController::class);
     Route::get('/my-week', [MealPlanController::class, 'index'])->name('meal_plans.index');
     Route::post('/meal-plans', [MealPlanController::class, 'store'])->name('meal_plans.store');
     Route::patch('/meal-plans/{mealPlan}/toggle', [MealPlanController::class, 'toggleDone']);
