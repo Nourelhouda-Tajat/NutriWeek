@@ -19,7 +19,7 @@ class RecipeSeeder extends Seeder
     {
         $nour = User::where('username', 'Nour')->first();
         $bob = User::where('username', 'bob')->first();
-        $catVedge = Category::where('name', 'Végétarien')->first();
+        $catVedge = Category::where('name', 'Lunch')->first();
         $avocat = Ingredient::where('name', 'Avocat')->first();
         $pain = Ingredient::where('name', 'Pain')->first();
         $poulet = Ingredient::where('name', 'Poulet')->first();

@@ -49,11 +49,7 @@
                 <span class="text-xl font-bold text-zinc-900 tracking-tight font-headline">NutriWeek</span>
             </a>
         </div>
-        <nav class="hidden md:flex items-center gap-6">
-            <a class="text-zinc-600 hover:text-primary font-headline font-semibold text-sm" href="{{ route('dashboard') }}">Home</a>
-            <a class="text-primary font-headline font-bold text-sm" href="{{ route('recipes.index') }}">Recipes</a>
-            <a class="text-zinc-600 hover:text-primary font-headline font-semibold text-sm" href="#">My Week</a>
-        </nav>
+        @include('layouts.nav')
         <div class="flex items-center gap-4">
             <span class="text-sm font-bold text-primary hidden md:block">{{ auth()->user()->username }}</span>
             <div class="w-8 h-8 rounded-full overflow-hidden border">
