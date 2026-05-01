@@ -32,7 +32,8 @@ class RecipeController extends Controller
     {
         return view('recipes.create', [
             'categories' => $category->all(),
-            'ingredients' => $ingredient->all()
+            // On récupère uniquement les catégories uniques d'ingrédients pour le premier menu
+            'ingredientCategories' => $ingredient->select('category')->whereNotNull('category')->distinct()->pluck('category')
         ]);
     }
 
