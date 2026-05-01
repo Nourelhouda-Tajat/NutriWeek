@@ -7,6 +7,18 @@ use App\Models\Ingredient;
 
 class IngredientController extends Controller
 {
+    public function getByCategory(Request $request)
+    {
+        $category = $request->query('category');
+        
+        $ingredients = Ingredient::where('category', $category)
+            ->orderBy('name')
+            ->select('id', 'name', 'default_unit')
+            ->get();
+            
+        return response()->json($ingredients);
+    }
+
     public function index()
     {
         $ingredients = Ingredient::orderBy('name')->get();
@@ -18,16 +30,26 @@ class IngredientController extends Controller
         return view('ingredients.create');
     }
 
+    
     public function store(Request $request)
     {
         $validated = $request->validate([
             'name' => 'required|unique:ingredients,name|max:255',
+            'category' => 'required|string|max:100', 
             'default_unit' => 'nullable|string|max:20',
         ]);
 
-        Ingredient::create($validated);
+        $ingredient = Ingredient::create($validated);
 
-        return redirect()->route('ingredients.index')->with('success', 'Ingrédient ajouté au référentiel.');
+        if ($request->expectsJson()) {
+            return response()->json([
+                'id' => $ingredient->id,
+                'name' => $ingredient->name,
+                'category' => $ingredient->category 
+            ]);
+        }
+
+        return redirect()->route('ingredients.index')->with('success', 'Ingrédient ajouté.');
     }
 
     public function edit(Ingredient $ingredient)
@@ -58,3 +80,4 @@ class IngredientController extends Controller
         return redirect()->route('ingredients.index')->with('success', 'Ingrédient supprimé.');
     }
 }
+a
